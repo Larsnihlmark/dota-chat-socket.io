@@ -1,6 +1,8 @@
 <template>
   <div class="ChatInputBox">
     <input class="ChatInput" type="text" placeholder="Message"/>
+    <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
+    
   </div>
 </template>
 
@@ -23,5 +25,9 @@ export default {
 .ChatInputBox{
   border-top: 1px solid #4e5155;
   margin-bottom: 1em;
+}
+.emote{
+  size: 2em;
+  
 }
 </style>
