@@ -8,42 +8,42 @@
     </h2>
 
   </div>
-    <div> 
+    <div v-on:click="clickRoom('Admin')"> 
       <span>
         <p>
             <font-awesome-icon :icon="['fas', 'volume-up']"/>
           #Admin</p>
       </span>
     </div>
-    <div>
+    <div v-on:click="clickRoom('General')">
       <span>
         <p>
           <font-awesome-icon :icon="['fas', 'volume-up']"/>
           #General</p>
       </span>
     </div>
-    <div>
+    <div v-on:click="clickRoom('SheitTalk')">
       <span>
         <p>
           <font-awesome-icon :icon="['fas', 'volume-up']"/>
           #ShietTalk</p>
       </span>
     </div>
-    <div>
+    <div v-on:click="clickRoom('Programming')">
       <span>
         <p>
           <font-awesome-icon :icon="['fas', 'volume-up']"/>
           #Programming</p>
       </span>
     </div>
-    <div>
+    <div v-on:click="clickRoom('Dota')">
       <span>
         <p>
           <font-awesome-icon :icon="['fas', 'volume-up']"/>
           #Dota</p>
       </span>
     </div>
-    <div>
+    <div v-on:click="clickRoom('Life')">
       <span>
         <p>
           <font-awesome-icon :icon="['fas', 'volume-up']"/>
@@ -56,6 +56,7 @@
 <script>
 import Vue from 'vue'
 import Rooms from './Rooms'
+import store from '../Store/store';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faVolumeUp, faUserPlus, faGrinBeam} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -67,7 +68,18 @@ Vue.config.productionTip = false
 export default {
   el: '.Room',
   component: {Rooms},
-  name: Rooms
+  name: 'Rooms',
+
+  data(){
+    return{
+      selectedRoom: ""
+    }
+  },
+    methods: {
+      clickRoom(roomsData){
+        store.commit('SaveRooms', roomsData)
+      }
+    }
 }
 </script>
 

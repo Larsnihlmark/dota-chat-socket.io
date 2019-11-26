@@ -1,7 +1,7 @@
 <template>
   <div class="Main">
-    <div class="Title">
-      <h2>Middle Chat</h2>
+    <div class="Title" v-on:>
+      <h2>{{titleSelectedRoom}}</h2>
     </div>
     <Chat/>
     <ChatInput/>
@@ -15,12 +15,18 @@
 <script>
 import ChatInput from './ChatInput';
 import Chat from './Chat';
+import store from '../Store/store';
 export default {
   name:'Main',
   components: {
     ChatInput,
     Chat
 
+  },
+  computed: {
+    titleSelectedRoom: function(){
+      return store.state.selectedRoom;
+    }
   }
 }
 </script>
