@@ -1,9 +1,11 @@
 <template>
   <div class="Main">
-    <div>
+    <div class="Title">
       <h2>Middle Chat</h2>
     </div>
+    <Chat/>
     <ChatInput/>
+
   </div>
 
 </template>
@@ -12,10 +14,12 @@
 
 <script>
 import ChatInput from './ChatInput';
+import Chat from './Chat';
 export default {
   name:'Main',
   components: {
-    ChatInput
+    ChatInput,
+    Chat
 
   }
 }
@@ -29,8 +33,14 @@ export default {
   height: 100vh;
   color: #fbfbfb;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-direction: column;
 
 }
+.Title{
+  position: absolute;
+  right: 45%;
+  top: 0em;
+}
+
 </style>
