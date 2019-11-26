@@ -1,14 +1,25 @@
 <template>
   <div class="ChatInputBox">
-    <input class="ChatInput" type="text" placeholder="Message"/>
+    <input v-model="chatInputData" class="ChatInput" type="text" v-on:keyup.enter="handleEnter" placeholder="Message"/>
     <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
     
   </div>
 </template>
 
 <script>
+import store from '../Store/store';
 export default {
-  
+  name: "ChatInput",
+  data(){
+    return{
+      chatInputData: ""
+    }
+  },
+  methods: {
+    handleEnter(){
+      store.commit('SaveMessage', this.chatInputData)
+    }
+  } 
 }
 </script>
 
