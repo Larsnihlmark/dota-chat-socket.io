@@ -7,6 +7,7 @@
 </template>
 
 <script>
+
 import store from '../Store/store';
 export default {
   name: "ChatInput",
@@ -17,9 +18,11 @@ export default {
   },
   methods: {
     handleEnter(){
-      store.commit('SaveMessage', this.chatInputData)
+      store.commit('SaveMessage', this.chatInputData);
+      this.$socket.client.emit('chat-message', { msg: this.chatInputData});
+      this.chatInputData = '';
     }
-  } 
+  }
 }
 </script>
 

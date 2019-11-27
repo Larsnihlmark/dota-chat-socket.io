@@ -1,12 +1,15 @@
 <template>
   <div class="singleMessage">
-    <p>hej</p>
+    <p>{{this.singleMessage}}</p>
   </div>
 </template>
 
 <script>
 export default {
-  
+  name: 'SingleMessages',
+  props: {
+    singleMessage: String
+  }
 }
 </script>
 
