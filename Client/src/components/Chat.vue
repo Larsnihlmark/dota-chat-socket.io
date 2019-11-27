@@ -1,16 +1,33 @@
 <template>
-  <div class="chatBox">
-    <SingleMessage/>
+  <div class="chatBox"> 
+    <div v-for="message in messages" v-bind:key="message.msg">
+      <SingleMessage v-bind:singleMessage="message" />
+    </div>
   </div>
 </template>
 
 <script>
+
 import SingleMessage from './SingleMessage.vue';
 export default {
   name: 'chat',
+  data() {
+    return {
+      messages: []
+    }
+  },
   components: {
     SingleMessage
+  },
+  sockets: {
+    connect() {
+      console.log('socket connected')
+    },
+    ReciveMessage(messageData) {
+      console.log(messageData);
+      this.messages.push(messageData.msg);
     }
+  }
   
 }
 </script>
