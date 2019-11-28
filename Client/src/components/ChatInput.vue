@@ -1,6 +1,11 @@
 <template>
   <div class="ChatInputBox">
-    <input v-model="chatInputData" class="ChatInput" type="text" v-on:keyup.enter="handleEnter" placeholder="Message"/>
+    <b-dropdown ref="dropUp" id="dropdown-dropup" no-caret dropup text="" variant="link">
+      <b-dropdown-item class="dropUpItem" href="#">Action</b-dropdown-item>
+      <b-dropdown-item class="dropUpItem" href="#">Another action</b-dropdown-item>
+      <b-dropdown-item  class="dropUpItem" href="#">Something else here</b-dropdown-item>
+    </b-dropdown>
+    <input v-model="chatInputData" class="ChatInput" type="text" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
     <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
     
   </div>
@@ -21,6 +26,12 @@ export default {
       store.commit('SaveMessage', this.chatInputData);
       this.$socket.client.emit('chat-message', { msg: this.chatInputData});
       this.chatInputData = '';
+    },
+    toggleDropUp(){
+      if(this.chatInputData === "/"){
+        this.$refs.dropUp.visible = !this.$refs.dropUp.visible;
+        
+      }
     }
   }
 }
@@ -44,4 +55,10 @@ export default {
   size: 2em;
   
 }
+#dropdown-dropup{
+  margin-bottom: 5em; 
+  left: 1.5em;
+  
+}
+
 </style>
