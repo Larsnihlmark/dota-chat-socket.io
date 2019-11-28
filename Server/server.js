@@ -1,9 +1,21 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var url = "http://worldtimeapi.org/api/timezone";
+var axios = require('axios');
 
-app.get('/', function(req, res){
-  res.sendFile('index.html', {root: '../public'});
+app.get('/api/timezone/:continent/:city/', (req, res) => {
+  axios.get(url + "/" + req.params.continent + "/" + req.params.city )
+  .then(function(response){
+      var convertDate = (response.data.datetime)
+      var timeData = convertDate.substring(11, 16)
+      res.send(timeData)
+  })
+  .catch(function(error){
+    console.log(error)
+    res.sendStatus(400)
+  })
+
 });
 
 io.on('connection', function(socket) {
