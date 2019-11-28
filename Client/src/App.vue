@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Sidebar/>
+    <LoginModal/>
     <Main/>
     <Rooms/>
   </div>
@@ -11,15 +12,16 @@
 import Sidebar from './components/Sidebar.vue';
 import Rooms from './components/Rooms.vue';
 import Main from './components/Main.vue';
-
+import LoginModal from './components/LoginModal';
 
 export default {
   name: 'app',
   components: {
     Sidebar,
     Rooms,
-    Main
-  }
+    Main,
+    LoginModal
+  },
 }
 </script>
 

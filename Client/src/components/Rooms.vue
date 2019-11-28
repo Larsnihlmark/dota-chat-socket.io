@@ -2,11 +2,11 @@
 <template>
   <div class="Room">
   <div class="RoomHeader">
+   
     <h2>DotaChat
 
-    <font-awesome-icon class="userPlus" :icon="['fas', 'user-plus']"/>
+    <!-- <font-awesome-icon @click="showModal" class="userPlus" :icon="['fas', 'user-plus']"/> -->
     </h2>
-
   </div>
     <div v-on:click="clickRoom('Admin')"> 
       <span>
@@ -55,19 +55,19 @@
 
 <script>
 import Vue from 'vue'
-import Rooms from './Rooms'
+
 import store from '../Store/store';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faVolumeUp, faUserPlus, faGrinBeam} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+
 library.add(faVolumeUp, faUserPlus, faGrinBeam)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 export default {
-  el: '.Room',
-  component: {Rooms},
   name: 'Rooms',
 
   data(){
