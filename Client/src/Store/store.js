@@ -8,7 +8,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     message: "",
-    selectedRoom: "DotaChat"
+    selectedRoom: "DotaChat",
+    userName: []
   },
   mutations: {
     SaveMessage (state, newMessage) {
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
     },
     SaveRooms (state, newRooms){
       state.selectedRoom = newRooms;
+    },
+    SaveUser (state,newUser){
+      state.userName = newUser
     }
   }
 })

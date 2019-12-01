@@ -7,16 +7,25 @@
     </div>
     <div>
       <img class="SidebarImage" src="../assets/logo.png"><img>
-      <span>Axel</span>
+      <span>{{userNames}}</span>
     </div>
   </div>
     
 </template>
 
 <script>
+import store from '../Store/store';
 export default {
-  
+  name: "SideBar",
+
+
+  computed: {
+    userNames: function(){
+      return store.state.userName;
+    }
+  }
 }
+
 </script>
 
 <style scoped>

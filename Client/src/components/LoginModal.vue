@@ -1,30 +1,55 @@
 <template>
 
-  <b-modal ref="my-modal" centered hide-footer title="Using Component Methods">
-      <div class="d-block text-center">
-        <h3>Hello From My Modal!</h3>
+  <b-modal ref="my-modal" body-bg-variant="dark"  bg-dark centered hide-footer hide-header title="Display Your Name">
+      <div class="d-block text-center text-white bg-dark">
+        <h3>Submit Your Username</h3>
       </div>
-      <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
+      <form ref="form" >
+        <b-form-group
+          class="text-white"
+          :state="nameState"
+          label="Username"
+          label-for="name-input"
+          invalid-feedback="Name is required"
+        >
+        <b-form-input
+            id="name-input"
+            v-model="name"
+            :state="nameState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+       <b-button size="sm" class="mt-1" variant="success" block  @click="handleSubmit">Submit</b-button>
+       <!-- <b-button size="sm" class="mt-1" variant="outline-danger"  @click="hideModal">Close Me</b-button> -->
   </b-modal>
 
 
 </template>
 
 <script>
+import store from '../Store/store';
 export default {
   name: "LoginModal",
 
+  data(){
+    return{
+        name: "",
+        nameState: null,
+        
+    }
+  },
   methods:{
     showModal(){
       this.$refs['my-modal'].show()
     },
-    hideModal() {
-      console.log("hello")
-      this.$refs['my-modal'].hide()
+    handleSubmit() {
+      store.commit('SaveUser', this.name)
+      return this.$refs['my-modal'].hide()
       },
  }, 
    mounted() {
-    console.log("hej");
+    
     this.showModal();
   
   },
@@ -32,5 +57,8 @@ export default {
 </script>
 
 <style scoped>
+#modelHeader{
+  background-color: black;
+}
 
 </style>

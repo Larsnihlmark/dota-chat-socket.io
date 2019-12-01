@@ -1,56 +1,64 @@
 
 <template>
-  <div class="Room">
+<div class="Room">
   <div class="RoomHeader">
-   
-    <h2>DotaChat
-
-    <!-- <font-awesome-icon @click="showModal" class="userPlus" :icon="['fas', 'user-plus']"/> -->
-    </h2>
+    <h2>DotaChat</h2>
   </div>
+  
     <div v-on:click="clickRoom('Admin')"> 
-      <span>
-        <p>
-            <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #Admin</p>
-      </span>
+        <b-container class="containerRooms">
+          <b-row>
+            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+            <b-col sm="4">#Admin</b-col>
+          </b-row>
+        </b-container>
     </div>
+
     <div v-on:click="clickRoom('General')">
-      <span>
-        <p>
-          <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #General</p>
-      </span>
+      <b-container class="containerRooms">
+          <b-row>
+            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+            <b-col sm="4">#General</b-col>
+          </b-row>
+      </b-container>
     </div>
-    <div v-on:click="clickRoom('SheitTalk')">
-      <span>
-        <p>
-          <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #ShietTalk</p>
-      </span>
+
+    <div v-on:click="clickRoom('AFK')">
+      <b-container class="containerRooms">
+          <b-row>
+            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+            <b-col sm="4">#AFK</b-col>
+          </b-row>
+      </b-container>
     </div>
+
     <div v-on:click="clickRoom('Programming')">
-      <span>
-        <p>
-          <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #Programming</p>
-      </span>
+      <b-container class="containerRooms">
+        <b-row>
+          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+          <b-col sm="4">#Programming</b-col>
+        </b-row>
+      </b-container>
     </div>
+
     <div v-on:click="clickRoom('Dota')">
-      <span>
-        <p>
-          <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #Dota</p>
-      </span>
+      <b-container class="containerRooms">
+        <b-row>
+          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+          <b-col sm="4">#Dota</b-col>
+        </b-row>
+      </b-container>
     </div>
+
     <div v-on:click="clickRoom('Life')">
-      <span>
-        <p>
-          <font-awesome-icon :icon="['fas', 'volume-up']"/>
-          #Life</p>
-      </span>
-    </div>
-  </div>
+      <b-container class="containerRooms">
+        <b-row>
+          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+          <b-col sm="4">#Life</b-col>
+        </b-row>
+      </b-container>
+    </div>  
+</div>
 </template>
 
 <script>
@@ -104,5 +112,8 @@ export default {
 .RoomHeader > div{
   padding: 2em;
   margin: 1em;
+}
+.containerRooms{
+  margin:1em;
 }
 </style>
