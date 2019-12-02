@@ -24,7 +24,7 @@ export default {
   name: "ChatInput",
   data(){
     return{
-      chatInputData: ""
+      chatInputData: ''
     }
   },
   methods: {
@@ -37,22 +37,21 @@ export default {
         axios.get('http://localhost:8080/api/timezone/' + continent + '/' + city)
           .then((response) => {
             let timeZoneMessage = 'Current time in ' + city + ' is ' + response.data;  
-            this.$socket.client.emit('chat-message', { msg: timeZoneMessage });
+            this.$socket.client.emit('chat-message', { msg: timeZoneMessage, username: store.state.userName});
             this.chatInputData = '';
           })
           .catch((error) => {
             console.log(error);
-            this.chatInputData = '';
           }); 
       }
-      if(this.chatInputData.indexOf('/HeroIcon') !== -1){
+      else if(this.chatInputData.indexOf('/HeroIcon') !== -1){
         const heroIconData = this.chatInputData.split(' ');
         const name = heroIconData[1];
         //send API request
         axios.get('http://localhost:8080/api/icon/' + name + '/')
         .then((response) => {
           let IconMessage = response.data;  
-            this.$socket.client.emit('chat-message', { msg: IconMessage });
+            this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName });
             this.chatInputData = '';
         })
         .catch((error) => {
@@ -60,14 +59,14 @@ export default {
           this.chatInputData = '';
         })
       }
-      if(this.chatInputData.indexOf('/HeroImage') !== -1){
+      else if(this.chatInputData.indexOf('/HeroImage') !== -1){
         const heroImageData = this.chatInputData.split(' ');
         const name = heroImageData[1];
         //send API request
         axios.get('http://localhost:8080/api/image/' + name + '/')
         .then((response) => {
           let IconMessage = response.data;  
-          this.$socket.client.emit('chat-message', { msg: IconMessage });
+          this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName });
           this.chatInputData = '';
         })
         .catch((error) => {
@@ -77,7 +76,7 @@ export default {
       }
        else {
         store.commit('SaveMessage', this.chatInputData);
-        this.$socket.client.emit('chat-message', { msg: this.chatInputData});
+        this.$socket.client.emit('chat-message', { msg: this.chatInputData, username: store.state.userName });
         this.chatInputData = '';
       }
     },
@@ -88,7 +87,7 @@ export default {
       }
     },
     handleTimeZoneClick() {
-      this.chatInputData = "/TimeZone continent city";
+      this.chatInputData = '/TimeZone continent city';
     },
     handleHeroIcon(){
       this.chatInputData = "/HeroIcon HeroName";

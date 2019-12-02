@@ -1,5 +1,6 @@
 <template>
   <div class="singleMessage">
+    <span class="username">{{this.userName}}</span>
     <div v-if="this.singleMessage.indexOf('https://api.opendota.com/apps/dota2/images/') !== -1">
       <img v-bind:src='this.singleMessage'><img>  
     </div>
@@ -13,7 +14,8 @@
 export default {
   name: 'SingleMessages',
   props: {
-    singleMessage: String
+    singleMessage: String,
+    userName: String
   }
 }
 </script>
@@ -26,5 +28,10 @@ export default {
       margin-bottom: 1em;
       text-align: left;
       padding: 1.5em;
-    }
+}
+.username {
+  font-weight: bold;
+  color: #2dcb70;
+}
+
 </style>
