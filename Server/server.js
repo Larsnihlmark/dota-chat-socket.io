@@ -88,8 +88,8 @@ app.get('/api/image/:name/', (req, res) => {
 
 io.on('connection', function(socket) {
   socket.on('chat-message', function(data) {
-    console.log('message: ' + data.msg);
-    io.emit('ReciveMessage', { msg: data.msg });
+    console.log('username ' + data.username + ' said ' + data.msg );
+    io.emit('ReciveMessage', { msg: data.msg, username: data.username }); // ska vara data.username, fixa sen när vi inte har merge issues med chatinputData
   });
   socket.on('disconnect', function(){
     console.log('user disconnected');

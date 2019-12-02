@@ -1,7 +1,7 @@
 <template>
   <div class="chatBox"> 
     <div v-for="message in messages" v-bind:key="message.msg">
-      <SingleMessage v-bind:singleMessage="message" />
+      <SingleMessage v-bind:singleMessage="message.msg" v-bind:userName="message.userName" />
     </div>
   </div>
 </template>
@@ -25,7 +25,10 @@ export default {
     },
     ReciveMessage(messageData) {
       console.log(messageData);
-      this.messages.push(messageData.msg);
+      this.messages.push({
+        msg: messageData.msg,
+        userName: messageData.username
+      });
     }
   }
   
