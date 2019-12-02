@@ -25,7 +25,7 @@ app.get('/api/icon/:name/', (req, res) => {
       const heroname = req.params.name.charAt(0).toUpperCase() + req.params.name.slice(1); // first letter in name to uppercase
       let heroData = responseData.find(elem => elem.localized_name === heroname);
       let iconSrc = heroData.icon;
-      res.send('https://api.opendota.com/' + iconSrc);
+      res.send('https://api.opendota.com' + iconSrc);
   })
   .catch(function(error){
     console.log(error);
@@ -41,7 +41,7 @@ app.get('/api/image/:name/', (req, res) => {
       const heroname = req.params.name.charAt(0).toUpperCase() + req.params.name.slice(1); // first letter in name to uppercase
       let heroData = responseData.find(elem => elem.localized_name === heroname);
       let iconSrc = heroData.img;
-      res.send('https://api.opendota.com/' + iconSrc);
+      res.send('https://api.opendota.com' + iconSrc);
   })
   .catch(function(error){
     console.log(error);

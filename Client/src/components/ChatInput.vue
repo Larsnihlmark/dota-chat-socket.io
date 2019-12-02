@@ -2,12 +2,16 @@
   <div class="ChatInputBox">
     <b-dropdown ref="dropUp" id="dropdown-dropup" no-caret dropup text="" variant="link">
       <b-dropdown-item @click="handleTimeZoneClick" class="dropUpItem" href="#">/CurrentTime</b-dropdown-item>
-      <b-dropdown-item class="dropUpItem" href="#">Another action</b-dropdown-item>
-      <b-dropdown-item  class="dropUpItem" href="#">Something else here</b-dropdown-item>
+      <b-dropdown-item @click="handleHeroIcon" class="dropUpItem" href="#">/HeroIcon</b-dropdown-item>
+      <b-dropdown-item  @click="handleHeroImage" class="dropUpItem" href="#">/HeroImage</b-dropdown-item>
     </b-dropdown>
     <input v-model="chatInputData" class="ChatInput" type="text" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
-    <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
-    
+      <b-dropdown  toggle-class="text-decoration-none" dropup no-caret>
+        <template v-slot:button-content>
+          <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
+        </template>
+        <b-dropdown-item href="#"></b-dropdown-item>
+      </b-dropdown>
   </div>
 </template>
 
@@ -40,7 +44,38 @@ export default {
             console.log(error);
             this.chatInputData = '';
           }); 
-      } else {
+      }
+      if(this.chatInputData.indexOf('/HeroIcon') !== -1){
+        const heroIconData = this.chatInputData.split(' ');
+        const name = heroIconData[1];
+        //send API request
+        axios.get('http://localhost:8080/api/icon/' + name + '/')
+        .then((response) => {
+          let IconMessage = response.data;  
+            this.$socket.client.emit('chat-message', { msg: IconMessage });
+            this.chatInputData = '';
+        })
+        .catch((error) => {
+          console.log(error)
+          this.chatInputData = '';
+        })
+      }
+      if(this.chatInputData.indexOf('/HeroImage') !== -1){
+        const heroImageData = this.chatInputData.split(' ');
+        const name = heroImageData[1];
+        //send API request
+        axios.get('http://localhost:8080/api/image/' + name + '/')
+        .then((response) => {
+          let IconMessage = response.data;  
+          this.$socket.client.emit('chat-message', { msg: IconMessage });
+          this.chatInputData = '';
+        })
+        .catch((error) => {
+          console.log(error)
+          this.chatInputData = '';
+        })
+      }
+       else {
         store.commit('SaveMessage', this.chatInputData);
         this.$socket.client.emit('chat-message', { msg: this.chatInputData});
         this.chatInputData = '';
@@ -54,6 +89,12 @@ export default {
     },
     handleTimeZoneClick() {
       this.chatInputData = "/TimeZone continent city";
+    },
+    handleHeroIcon(){
+      this.chatInputData = "/HeroIcon HeroName";
+    },
+    handleHeroImage(){
+      this.chatInputData = "/HeroImage HeroName";
     }
   }
 }
@@ -65,7 +106,7 @@ export default {
   color: #fbfbfb;
   border: 3px solid #4e5155;
   padding: 1em;
-  width: 90%;
+  width: 85%;
   
   
 }

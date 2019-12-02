@@ -1,6 +1,11 @@
 <template>
   <div class="singleMessage">
-    <p>{{this.singleMessage}}</p>
+    <div v-if="this.singleMessage.indexOf('https://api.opendota.com/apps/dota2/images/') !== -1">
+      <img v-bind:src='this.singleMessage'><img>  
+    </div>
+      <div v-else>
+        <p>{{this.singleMessage}}</p>
+      </div>
   </div>
 </template>
 
