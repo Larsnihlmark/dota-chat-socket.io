@@ -46,8 +46,10 @@ export default {
       }
       else if(this.chatInputData.indexOf('/HeroIcon') !== -1){
         const heroIconData = this.chatInputData.split(' ');
-        const name = heroIconData[1];
-        //send API request
+        let name = heroIconData[1];
+        if (heroIconData[2] !== undefined) {
+          name = name + '%20' + heroIconData[2];
+        }
         axios.get('http://localhost:8080/api/icon/' + name + '/')
         .then((response) => {
           let IconMessage = response.data;  
@@ -61,7 +63,8 @@ export default {
       }
       else if(this.chatInputData.indexOf('/HeroImage') !== -1){
         const heroImageData = this.chatInputData.split(' ');
-        const name = heroImageData[1];
+        let name = heroImageData[1];
+        name = name.replace(' ', '%20');
         //send API request
         axios.get('http://localhost:8080/api/image/' + name + '/')
         .then((response) => {
