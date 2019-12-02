@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     handleEnter(){
-      if (this.chatInputData.indexOf('/Timezone ')) {
+      if (this.chatInputData.indexOf('/TimeZone ') !== -1) {
         const timezoneData = this.chatInputData.split(' ');
         const continent = timezoneData[1];
         const city = timezoneData[2];
