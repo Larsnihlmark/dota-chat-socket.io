@@ -1,8 +1,9 @@
 <template>
-  <div class="chatBox"> 
+  <div class="chatBox">
     <div v-for="message in messages" v-bind:key="message.msg">
       <SingleMessage v-bind:singleMessage="message.msg" v-bind:userName="message.userName" />
     </div>
+      <p v-html="typing"></p>
   </div>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   name: 'chat',
   data() {
     return {
-      messages: []
+      messages: [],
+      typing: ""
     }
   },
   components: {
@@ -29,6 +31,11 @@ export default {
         msg: messageData.msg,
         userName: messageData.username
       });
+      this.typing = "";
+    },
+    TypingMessage(data){
+      this.typing = '<p><em>' + data.username + ' is typing a message...</em></p>'
+        
     }
   }
   

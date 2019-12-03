@@ -5,7 +5,7 @@
       <b-dropdown-item @click="handleHeroIcon" class="dropUpItem" href="#">/HeroIcon</b-dropdown-item>
       <b-dropdown-item  @click="handleHeroImage" class="dropUpItem" href="#">/HeroImage</b-dropdown-item>
     </b-dropdown>
-    <input v-model="chatInputData" class="ChatInput" type="text" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
+    <input v-model="chatInputData" class="ChatInput" type="text" v-on:change="broadcastMessage" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
       <b-dropdown  toggle-class="text-decoration-none" dropup no-caret>
         <template v-slot:button-content>
           <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
@@ -88,6 +88,9 @@ export default {
         this.$refs.dropUp.visible = !this.$refs.dropUp.visible;
         
       }
+    },
+    broadcastMessage(){
+      this.$socket.client.emit('Typing', {username: store.state.userName});
     },
     handleTimeZoneClick() {
       this.chatInputData = '/TimeZone continent city';
