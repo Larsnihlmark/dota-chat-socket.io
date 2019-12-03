@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 
-const socket = io('http://localhost:8000');
+const socket = io('localhost:8000');
 
 Vue.use(BootstrapVue);
 Vue.use(VueSocketIOExt, socket);

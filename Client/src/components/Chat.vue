@@ -1,6 +1,6 @@
 <template>
   <div class="chatBox">
-    <div v-for="message in messages" v-bind:key="message.msg">
+    <div v-for="message in this.messages" v-bind:key="message.msg">
       <SingleMessage v-bind:singleMessage="message.msg" v-bind:userName="message.userName" />
     </div>
       <p v-html="typing"></p>
@@ -8,33 +8,43 @@
 </template>
 
 <script>
-
+import store from '../Store/store';
 import SingleMessage from './SingleMessage.vue';
 export default {
   name: 'chat',
   data() {
     return {
-      messages: [],
       typing: ""
     }
   },
   components: {
     SingleMessage
   },
+  created() {
+    this.$socket.client.emit('join-room', { room: store.state.selectedRoom, username: store.state.userName,  password: "" });
+  }, 
+  computed: {
+    messages: function(){
+      return store.state.messages;
+    }
+  },
   sockets: {
     connect() {
       console.log('socket connected')
     },
     ReciveMessage(messageData) {
-      console.log(messageData);
-      this.messages.push({
-        msg: messageData.msg,
-        userName: messageData.username
-      });
+      if (messageData.room === store.state.selectedRoom) {
+        store.commit('addMessage', {
+          msg: messageData.msg,
+          userName: messageData.username
+        });
+      }
       this.typing = "";
     },
     TypingMessage(data){
-      this.typing = '<p><em>' + data.username + ' is typing a message...</em></p>'
+      if (data.room === store.state.selectedRoom) {
+        this.typing = '<p><em>' + data.username + ' is typing a message...</em></p>';
+      }
         
     }
   }
