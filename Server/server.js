@@ -91,8 +91,9 @@ io.on('connection', function(socket) {
     console.log('username ' + data.username + ' said ' + data.msg );
     io.emit('ReciveMessage', { msg: data.msg, username: data.username }); // ska vara data.username, fixa sen när vi inte har merge issues med chatinputData
   });
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
+  socket.on('Typing', function(data){
+    console.log(data.username + ' Is typing a message...');
+    socket.broadcast.emit('TypingMessage', {username: data.username} );
   });
 });
 
