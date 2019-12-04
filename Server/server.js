@@ -86,14 +86,43 @@ app.get('/api/image/:name/', (req, res) => {
 //   })
 // }
 
+let rooms = [];
+
 io.on('connection', function(socket) {
   socket.on('chat-message', function(data) {
     console.log('username ' + data.username + ' said ' + data.msg );
-    io.emit('ReciveMessage', { msg: data.msg, username: data.username }); // ska vara data.username, fixa sen när vi inte har merge issues med chatinputData
+    io.to(data.room).emit('ReciveMessage', { msg: data.msg, username: data.username, room: data.room }); // ska vara data.username, fixa sen när vi inte har merge issues med chatinputData
   });
   socket.on('Typing', function(data){
     console.log(data.username + ' Is typing a message...');
-    socket.broadcast.emit('TypingMessage', {username: data.username} );
+    io.to(data.room).emit('TypingMessage', {username: data.username, room: data.room} );
+  });
+  socket.on('join-room', function(data, callback) {
+    // check if room is in list of rooms 
+    let selectedRoom = rooms.find(room=> room.name === data.room);
+    if (selectedRoom !== undefined) {
+      // room exists check if password 
+      if (selectedRoom.password === data.password) {
+        console.log(data.username + ' joined ' + data.room);
+        socket.join(data.room);
+        if (callback) {
+          callback(true);
+        }
+      } else {
+        // callback false for error
+        console.log(data.username + ' entered the wrong password for ' + data.room);
+        if (callback) {
+          callback(false);
+        }
+      }
+    } else {
+      console.log(data.username + ' joined ' + data.room);
+      rooms.push({ name: data.room, password: data.password });
+      socket.join(data.room);
+      if (callback) {
+        callback(true);
+      }
+    }
   });
 });
 

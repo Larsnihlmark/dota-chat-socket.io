@@ -5,7 +5,7 @@
       <b-dropdown-item @click="handleHeroIcon" class="dropUpItem" href="#">/HeroIcon</b-dropdown-item>
       <b-dropdown-item  @click="handleHeroImage" class="dropUpItem" href="#">/HeroImage</b-dropdown-item>
     </b-dropdown>
-    <input v-model="chatInputData" class="ChatInput" type="text" v-on:change="broadcastMessage" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
+    <input v-model="chatInputData" class="ChatInput" type="text" v-on:input="broadcastMessage" v-on:keyup.enter="handleEnter" v-on:keyup.55="toggleDropUp" placeholder="Message"/>
       <b-dropdown  toggle-class="text-decoration-none" dropup no-caret>
         <template v-slot:button-content>
           <font-awesome-icon class="emote" :icon="['fas', 'grin-beam']"/>
@@ -37,7 +37,7 @@ export default {
         axios.get('http://localhost:8080/api/timezone/' + continent + '/' + city)
           .then((response) => {
             let timeZoneMessage = 'Current time in ' + city + ' is ' + response.data;  
-            this.$socket.client.emit('chat-message', { msg: timeZoneMessage, username: store.state.userName});
+            this.$socket.client.emit('chat-message', { msg: timeZoneMessage, username: store.state.userName, room: store.state.selectedRoom });
             this.chatInputData = '';
           })
           .catch((error) => {
@@ -53,7 +53,7 @@ export default {
         axios.get('http://localhost:8080/api/icon/' + name + '/')
         .then((response) => {
           let IconMessage = response.data;  
-            this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName });
+            this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName, room: store.state.selectedRoom });
             this.chatInputData = '';
         })
         .catch((error) => {
@@ -69,7 +69,7 @@ export default {
         axios.get('http://localhost:8080/api/image/' + name + '/')
         .then((response) => {
           let IconMessage = response.data;  
-          this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName });
+          this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName, room: store.state.selectedRoom });
           this.chatInputData = '';
         })
         .catch((error) => {
@@ -78,8 +78,7 @@ export default {
         })
       }
        else {
-        store.commit('SaveMessage', this.chatInputData);
-        this.$socket.client.emit('chat-message', { msg: this.chatInputData, username: store.state.userName });
+        this.$socket.client.emit('chat-message', { msg: this.chatInputData, username: store.state.userName, room: store.state.selectedRoom });
         this.chatInputData = '';
       }
     },
@@ -90,7 +89,7 @@ export default {
       }
     },
     broadcastMessage(){
-      this.$socket.client.emit('Typing', {username: store.state.userName});
+      this.$socket.client.emit('Typing', {username: store.state.userName, room: store.state.selectedRoom});
     },
     handleTimeZoneClick() {
       this.chatInputData = '/TimeZone continent city';
