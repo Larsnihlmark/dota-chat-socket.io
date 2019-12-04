@@ -1,8 +1,8 @@
 # Dota Chat
-
+Simple Dota chat with API request to openDota and WorldTime API
 
 # Uppgift (Swedish)
-
+Uppgiften vi fick var att skapa en chat med socket.io för WorldTime api användes (http://worldtimeapi.org/) för dota API användes: (https://www.opendota.com/). Fungerande chat med kommando 3 "/" för att anropa 2 olika tredjeparts-APIer.Det ska kunna gå att välja ett nickname och det ska kunna stå att någon skriver på sidan. Det går att skapa en rum med lösenord.
 
 # Setup
 1. Clone the repo
