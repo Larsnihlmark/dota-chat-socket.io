@@ -4,62 +4,44 @@
   <RoomsModal />
   <div class="RoomHeader">
     <h2>DotaChat</h2>
-     <b-button v-b-modal.rooms-modal class="addRoomBtn"><font-awesome-icon :icon="['fas', 'plus']"/></b-button>
+     <b-button v-b-modal="'rooms-modal'" class="addRoomBtn"><font-awesome-icon :icon="['fas', 'plus']"/></b-button>
   </div>
-  
-    <div v-on:click="clickRoom('Admin')"> 
-        <b-container class="containerRooms">
-          <b-row>
-            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-            <b-col sm="4">#Admin</b-col>
-          </b-row>
-        </b-container>
-    </div>
+    <b-modal id="password-modal" ref="password-modal" body-bg-variant="dark"  bg-dark centered hide-footer hide-header title="Display Your Name">
+      <div class="d-block text-center text-white bg-dark">
+          <h3>Enter Password</h3>
+      </div>
+      <form ref="password-form" >
+          <b-form-group
+          class="text-white"
+          label="Password *"
+          label-for="password-input"
+          invalid-feedback="Password is invalid"
+          required
+          >
+              <b-form-input
+                  id="password-input"
+                  v-model="password"
+              ></b-form-input>
+          </b-form-group>
+      </form>
+      <b-button size="sm" class="mt-1" variant="success" block  @click="handleSubmit">Enter Room</b-button>
+      <p class="error">{{this.error}}</p>
+    </b-modal>
 
-    <div v-on:click="clickRoom('General')">
+    <div v-for="room in this.rooms"  v-bind:key="room.name" v-on:click="clickRoom(room.name)">
       <b-container class="containerRooms">
           <b-row>
             <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-            <b-col sm="4">#General</b-col>
+            <b-col sm="4">{{room.name}}</b-col>
           </b-row>
       </b-container>
     </div>
-
-    <div v-on:click="clickRoom('AFK')">
-      <b-container class="containerRooms">
-          <b-row>
-            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-            <b-col sm="4">#AFK</b-col>
-          </b-row>
-      </b-container>
-    </div>
-
-    <div v-on:click="clickRoom('Programming')">
-      <b-container class="containerRooms">
-        <b-row>
-          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-          <b-col sm="4">#Programming</b-col>
-        </b-row>
-      </b-container>
-    </div>
-
-    <div v-on:click="clickRoom('Dota')">
-      <b-container class="containerRooms">
-        <b-row>
-          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-          <b-col sm="4">#Dota</b-col>
-        </b-row>
-      </b-container>
-    </div>
-
-    <div v-on:click="clickRoom('Life')">
-      <b-container class="containerRooms">
-        <b-row>
-          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-          <b-col sm="4">#Life</b-col>
-        </b-row>
-      </b-container>
-    </div>  
+    
+    <!-- <div>
+      <li v-for="room in this.rooms"  v-bind:key="room.name">
+        {{ room.name }}
+      </li>
+    </div> -->
 </div>
 </template>
 
@@ -82,7 +64,9 @@ export default {
 
   data(){
     return{
-      selectedRoom: ""
+      selectedRoom: "",
+      error: "",
+      password: ""
     }
   },
   components: {
@@ -90,17 +74,54 @@ export default {
   },
     methods: {
       clickRoom(roomsData){
+        // check if room has password
         this.selectedRoom = roomsData;
-        store.commit('SaveRooms', roomsData);
-        // reset messages
-        store.commit('resetMessages');
-        // join room 
-        this.$socket.client.emit('join-room', { room: this.selectedRoom, username: store.state.userName, password: "" });
+        this.$socket.client.emit('check-password', this.selectedRoom, (data) => {
+          if (data === true) {
+            // show modal
+            this.$refs['password-modal'].show();
+          } else {
+            store.commit('SaveRooms', roomsData);
+            // reset messages
+            store.commit('resetMessages');
+            // join room 
+            this.$socket.client.emit('join-room', { room: this.selectedRoom, username: store.state.userName, password: "" });
+          }
+        });  
       }, 
       showModal() {
         console.log('clicked');
         store.commit('showRoomModal', true);
+      },
+      handleSubmit() {
+            this.$socket.client.emit('join-room', { room: this.selectedRoom, username: store.state.userName, password: this.password }, (status) => {
+                if(status === false) {
+                    // display error
+                    this.error = "Wrong password for " + this.selectedRoom;
+                } else {
+                  store.commit('SaveRooms', this.selectedRoom);
+                  // reset messages
+                  store.commit('resetMessages');
+                  // join room 
+                  this.$socket.client.emit('join-room', { room: this.selectedRoom, username: store.state.userName, password: this.password });
+                  this.error = "";
+                  return this.$refs['password-modal'].hide();
+                }
+            });
+            this.$socket.client.emit('get-rooms', '', (data) => {
+                store.commit('addRooms', data);
+            });
       }
+    },
+    computed: {
+      rooms: function(){
+        return store.state.rooms;
+      }
+    },
+    mounted() {
+      this.$socket.client.emit('get-rooms', '', (data) => {
+          store.commit('addRooms', data);
+      });
     }
 }
 </script>
@@ -135,5 +156,9 @@ export default {
 }
 .containerRooms{
   margin:1em;
+}
+.error {
+    color: red;
+    font-weight: red;
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="d-block text-center text-white bg-dark">
         <h3>Submit Your Username</h3>
       </div>
-      <form ref="form" >
+      <form ref="form">
         <b-form-group
           class="text-white"
           :state="nameState"
@@ -20,7 +20,7 @@
           ></b-form-input>
         </b-form-group>
       </form>
-       <b-button size="sm" class="mt-1" variant="success" block  @click="handleSubmit">Submit</b-button>
+       <b-button size="sm" class="mt-1" variant="success" block @click="handleSubmit">Submit</b-button>
        <!-- <b-button size="sm" class="mt-1" variant="outline-danger"  @click="hideModal">Close Me</b-button> -->
   </b-modal>
 

@@ -1,9 +1,13 @@
 <template>
   <div class="Sidebar">
     <div>
-      <h3>Online: 2</h3>
+      <h3>Online</h3>
       <img class="SidebarImage" src="../assets/logo.png"><img>
       <span>Lars</span>
+    </div>
+    <div>
+      <img class="SidebarImage" src="../assets/logo.png"><img>
+      <span>Alex</span>
     </div>
     <div>
       <img class="SidebarImage" src="../assets/logo.png"><img>

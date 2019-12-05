@@ -86,7 +86,32 @@ app.get('/api/image/:name/', (req, res) => {
 //   })
 // }
 
-let rooms = [];
+let rooms = [
+  {
+    name: 'Admin',
+    password: '1'
+  },
+  {
+    name: 'General',
+    password: ''
+  },
+  {
+    name: 'AFK',
+    password: ''
+  },
+  {
+    name: 'Programming',
+    password: ''
+  },
+  {
+    name: 'Dota',
+    password: ''
+  },
+  {
+    name: 'Life',
+    password: ''
+  }
+];
 
 io.on('connection', function(socket) {
   socket.on('chat-message', function(data) {
@@ -97,29 +122,57 @@ io.on('connection', function(socket) {
     console.log(data.username + ' Is typing a message...');
     io.to(data.room).emit('TypingMessage', {username: data.username, room: data.room} );
   });
-  socket.on('join-room', function(data, callback) {
+  socket.on('create-room', function(data) {
     // check if room is in list of rooms 
     let selectedRoom = rooms.find(room=> room.name === data.room);
-    if (selectedRoom !== undefined) {
-      // room exists check if password 
-      if (selectedRoom.password === data.password) {
-        console.log(data.username + ' joined ' + data.room);
-        socket.join(data.room);
-        if (callback) {
-          callback(true);
-        }
-      } else {
-        // callback false for error
-        console.log(data.username + ' entered the wrong password for ' + data.room);
-        if (callback) {
-          callback(false);
-        }
-      }
-    } else {
-      console.log(data.username + ' joined ' + data.room);
+    if (selectedRoom === undefined) {
+      // console.log(data.username + ' joined ' + data.room);
       rooms.push({ name: data.room, password: data.password });
+      // socket.join(data.room);
+    }
+  });
+  socket.on('join-room', function(data, callback) {
+    // check if room has password 
+    let selectedRoom = rooms.find(room=> room.name === data.room);
+    console.log(rooms);
+    console.log(selectedRoom);
+    if (selectedRoom === undefined) {
+      // quick fix to handle weird bug when it returns selectedroom on refresh, do nothing for now
+    }
+    else if (rooms.length === 0) {
+      console.log(data.username + ' joined ' + data.room);
+      socket.join(data.room);
+    }
+    else if (selectedRoom.password === data.password) {
+      console.log(data.username + ' joined ' + data.room);
       socket.join(data.room);
       if (callback) {
+        callback(true);
+      }
+    } else {
+      // callback false for error
+      console.log(data.username + ' entered the wrong password for ' + data.room);
+      if (callback) {
+        callback(false);
+      }
+    }
+  });
+  socket.on('get-rooms', function(data, callback) {
+    if(callback) {
+      callback(rooms);
+    }
+  });
+  socket.on('check-password', function(roomName, callback) {
+    let selectedRoom = rooms.find(room=> room.name === roomName); // find the room
+    // check if room has password
+    if (selectedRoom.password === "") {
+      // no password, return false
+      if(callback) {
+        callback(false);
+      }
+    } else {
+      // has password, return true
+      if(callback) {
         callback(true);
       }
     }

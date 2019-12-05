@@ -1,5 +1,3 @@
-
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -8,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     messages: [],
+    rooms: [],
     selectedRoom: "General",
     userName: "---",
     showRoomModal: false,
@@ -38,9 +37,12 @@ const store = new Vuex.Store({
     },
     updateError(state, errorText){
       state.error = errorText;
+    },
+    addRooms(state, rooms) {
+      state.rooms = rooms;
     }
   }
-})
+});
 
 
 export default store

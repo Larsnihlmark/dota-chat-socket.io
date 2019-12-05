@@ -55,6 +55,8 @@ export default {
         },
         handleSubmit() {
             // join room 
+            this.$socket.client.emit('create-room', { room: this.name, username: store.state.userName, password: this.password });
+            
             this.$socket.client.emit('join-room', { room: this.name, username: store.state.userName, password: this.password }, (status) => {
                 if(status === false) {
                     // display error
@@ -68,7 +70,10 @@ export default {
                     return this.$refs['rooms-modal'].hide();
                 }
             });
-        },
+            this.$socket.client.emit('get-rooms', '', (data) => {
+                store.commit('addRooms', data);
+            });
+        }
     }
 }
 </script>
