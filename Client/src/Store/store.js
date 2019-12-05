@@ -11,7 +11,8 @@ const store = new Vuex.Store({
     selectedRoom: "General",
     userName: "---",
     showRoomModal: false,
-    showPasswordModal: false
+    showPasswordModal: false,
+    error: ""
   },
   mutations: {
     SaveMessage(state, newMessage) {
@@ -34,6 +35,9 @@ const store = new Vuex.Store({
     },
     resetMessages(state) {
       state.messages = [];
+    },
+    updateError(state, errorText){
+      state.error = errorText;
     }
   }
 })
