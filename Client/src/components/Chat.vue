@@ -4,6 +4,7 @@
       <SingleMessage v-bind:singleMessage="message.msg" v-bind:userName="message.userName" />
     </div>
       <p v-html="typing"></p>
+      <p class="error">{{error}}</p>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
   name: 'chat',
   data() {
     return {
-      typing: ""
+      typing: "",
     }
   },
   components: {
@@ -25,8 +26,11 @@ export default {
   }, 
   computed: {
     messages: function(){
-      return store.state.messages;
-    }
+      return store.state.messages; 
+    },
+      error: function(){
+        return store.state.error;
+      }
   },
   sockets: {
     connect() {
@@ -39,16 +43,14 @@ export default {
           userName: messageData.username
         });
       }
-      this.typing = "";
+      this.typing = "";    
     },
     TypingMessage(data){
       if (data.room === store.state.selectedRoom) {
         this.typing = '<p><em>' + data.username + ' is typing a message...</em></p>';
       }
-        
-    }
+    },
   }
-  
 }
 </script>
 
@@ -60,6 +62,9 @@ export default {
       justify-items: end;
       flex-direction: column;
       width: 100%;
-      
     }
+    .error {
+    color: rgb(255, 60, 60);
+    font-weight: bold;
+}
 </style>

@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     handleEnter(){
+      store.commit('updateError', "");
       if (this.chatInputData.indexOf('/TimeZone ') !== -1) {
         const timezoneData = this.chatInputData.split(' ');
         const continent = timezoneData[1];
@@ -42,6 +43,7 @@ export default {
           })
           .catch((error) => {
             console.log(error);
+            store.commit('updateError'," Name misspelling try other Continet or Capital city");
           }); 
       }
       else if(this.chatInputData.indexOf('/HeroIcon') !== -1){
@@ -52,12 +54,13 @@ export default {
         }
         axios.get('http://localhost:8080/api/icon/' + name + '/')
         .then((response) => {
-          let IconMessage = response.data;  
-            this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName, room: store.state.selectedRoom });
+          let iconMessage = response.data;  
+            this.$socket.client.emit('chat-message', { msg: iconMessage, username: store.state.userName, room: store.state.selectedRoom });
             this.chatInputData = '';
         })
         .catch((error) => {
           console.log(error)
+          store.commit('updateError', "Icon name misspelling try other name or hero for example Lina" );
           this.chatInputData = '';
         })
       }
@@ -68,13 +71,15 @@ export default {
         //send API request
         axios.get('http://localhost:8080/api/image/' + name + '/')
         .then((response) => {
-          let IconMessage = response.data;  
-          this.$socket.client.emit('chat-message', { msg: IconMessage, username: store.state.userName, room: store.state.selectedRoom });
+          let imageMessage = response.data;  
+          this.$socket.client.emit('chat-message', { msg: imageMessage, username: store.state.userName, room: store.state.selectedRoom });
           this.chatInputData = '';
         })
         .catch((error) => {
           console.log(error)
-          this.chatInputData = '';
+          store.commit('updateError',"Image name misspelling try other name or hero for example Lina");
+          this.chatInputData = "";
+          /* this.chatInputData = ''; */
         })
       }
        else {
