@@ -63,10 +63,8 @@ export default {
 <style scoped>
 
     .chatBox{
-      display: flex;
-      justify-content: flex-end;
-      justify-items: end;
-      flex-direction: column;
+      z-index: 0;
+      overflow: auto;
       width: 100%;
     }
     .error {

@@ -40,8 +40,12 @@ export default {
 
 }
 .Title{
+  z-index: 90;
+  background-color: #36393e;
+  border-bottom: 3px solid #303136;
   position: absolute;
-  right: 45%;
+  width: 60%;
+  right: 20%;
   top: 0em;
 }
 
