@@ -1,5 +1,6 @@
 
 <template>
+<!-- Hantering av room läggs höger om sidan -->
 <div class="Room">
   <RoomsModal />
   <div class="RoomHeader">
@@ -8,40 +9,34 @@
   </div>
     <b-modal id="password-modal" ref="password-modal" body-bg-variant="dark"  bg-dark centered hide-footer hide-header title="Display Your Name">
       <div class="d-block text-center text-white bg-dark">
-          <h3>Enter Password</h3>
+        <h3>Enter Password</h3>
       </div>
       <form ref="password-form" >
-          <b-form-group
+        <b-form-group
           class="text-white"
           label="Password *"
           label-for="password-input"
           invalid-feedback="Password is invalid"
           required
           >
-              <b-form-input
-                  id="password-input"
-                  v-model="password"
-              ></b-form-input>
-          </b-form-group>
+          <b-form-input
+            id="password-input"
+            v-model="password"
+          ></b-form-input>
+        </b-form-group>
       </form>
       <b-button size="sm" class="mt-1" variant="success" block  @click="handleSubmit">Enter Room</b-button>
       <p class="error">{{this.error}}</p>
     </b-modal>
-
+   <!--  Loppar igenom alla elementet rooms med v-for och vissar upp dom -->
     <div v-for="room in this.rooms"  v-bind:key="room.name" v-on:click="clickRoom(room.name)">
       <b-container class="containerRooms">
-          <b-row>
-            <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
-            <b-col sm="4">{{room.name}}</b-col>
-          </b-row>
+        <b-row>
+          <b-col sm="3"><font-awesome-icon :icon="['fas', 'volume-up']"/></b-col>
+          <b-col sm="4">{{room.name}}</b-col>
+        </b-row>
       </b-container>
     </div>
-    
-    <!-- <div>
-      <li v-for="room in this.rooms"  v-bind:key="room.name">
-        {{ room.name }}
-      </li>
-    </div> -->
 </div>
 </template>
 
@@ -53,12 +48,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faVolumeUp, faPlus, faGrinBeam} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-
 library.add(faVolumeUp, faPlus, faGrinBeam)
-
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-
 Vue.config.productionTip = false
+
 export default {
   name: 'Rooms',
 
@@ -90,7 +83,6 @@ export default {
         });  
       }, 
       showModal() {
-        console.log('clicked');
         store.commit('showRoomModal', true);
       },
       handleSubmit() {
@@ -119,7 +111,7 @@ export default {
       }
     },
     mounted() {
-      this.$socket.client.emit('get-rooms', '', (data) => {
+      this.$socket.client.emit('get-rooms', '', (data) => { //Hämtar alla rooms från socket när den har laddat in
           store.commit('addRooms', data);
       });
     }
@@ -135,7 +127,6 @@ export default {
   color: #fbfbfb;
 }
 .RoomHeader{
-  /* padding: 1%; */
   border: 1px solid gray;
   background-color: #36393e;
 }
@@ -144,12 +135,6 @@ export default {
   margin-top: -2.5em;
   margin-right: 0.2em;
 }
-/* .plusSquare{
-  float: right;
-  width: 20%;
-  height: 18px;
-  margin-top: -2.1em;
-} */
 .RoomHeader > div{
   padding: 2em;
   margin: 1em;

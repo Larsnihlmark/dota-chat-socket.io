@@ -1,4 +1,5 @@
 <template>
+<!-- Chatinput boxen -->
   <div class="ChatInputBox">
     <b-dropdown ref="dropUp" id="dropdown-dropup" no-caret dropup text="" variant="link">
       <b-dropdown-item @click="handleTimeZoneClick" class="dropUpItem" href="#">/CurrentTime</b-dropdown-item>
@@ -28,10 +29,11 @@ export default {
     }
   },
   methods: {
+   /*  Hantering av enterpress  */
     handleEnter(){
       store.commit('updateError', "");
       if (this.chatInputData.indexOf('/TimeZone ') !== -1) {
-        const timezoneData = this.chatInputData.split(' ');
+        const timezoneData = this.chatInputData.split(' ');//Vi vill splita för Orden föra att bara hämta ut världsdel och stad
         const continent = timezoneData[1];
         const city = timezoneData[2];
         // send API request
@@ -46,7 +48,7 @@ export default {
             store.commit('updateError'," Name misspelling try other Continet or Capital city");
           }); 
       }
-      else if(this.chatInputData.indexOf('/HeroIcon') !== -1){
+      else if(this.chatInputData.indexOf('/HeroIcon') !== -1){ //Enterpress för HeroIcon
         const heroIconData = this.chatInputData.split(' ');
         let name = heroIconData[1];
         if (heroIconData[2] !== undefined) {
@@ -64,10 +66,10 @@ export default {
           this.chatInputData = '';
         })
       }
-      else if(this.chatInputData.indexOf('/HeroImage') !== -1){
+      else if(this.chatInputData.indexOf('/HeroImage') !== -1){ //Enterpress för HeroImage
         const heroImageData = this.chatInputData.split(' ');
         let name = heroImageData[1];
-        name = name.replace(' ', '%20');
+        name = name.replace(' ', '%20'); //byt space mot html tecken för API ska fungera med heroname med mellanrum
         //send API request
         axios.get('http://localhost:8080/api/image/' + name + '/')
         .then((response) => {
@@ -79,7 +81,6 @@ export default {
           console.log(error)
           store.commit('updateError',"Image name misspelling try other name or hero for example Lina");
           this.chatInputData = "";
-          /* this.chatInputData = ''; */
         })
       }
        else {
@@ -94,16 +95,17 @@ export default {
       }
     },
     broadcastMessage(){
+      //När någon skriver i inputfältet skickar till server att någon skriver
       this.$socket.client.emit('Typing', {username: store.state.userName, room: store.state.selectedRoom});
     },
     handleTimeZoneClick() {
-      this.chatInputData = '/TimeZone continent city';
+      this.chatInputData = '/TimeZone continent city';//Skriv in detta i chatboxen när man klickar på "/" Timezone på dropup
     },
     handleHeroIcon(){
-      this.chatInputData = "/HeroIcon HeroName";
+      this.chatInputData = "/HeroIcon HeroName"; //Skriv in detta i chatboxen när man klickar på "/" HeroIcon på dropup
     },
     handleHeroImage(){
-      this.chatInputData = "/HeroImage HeroName";
+      this.chatInputData = "/HeroImage HeroName";//Skriv in detta i chatboxen när man klickar på "/" HeroImage på dropup
     }
   }
 }

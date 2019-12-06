@@ -1,4 +1,5 @@
 <template>
+<!-- Hantering av username på vänster dian av sidan -->
   <div class="Sidebar">
     <div>
       <h3>Online</h3>
@@ -21,11 +22,9 @@
 import store from '../Store/store';
 export default {
   name: "SideBar",
-
-
   computed: {
     userNames: function(){
-      return store.state.userName;
+      return store.state.userName; //Hämtar från användareNamn från vuex store
     }
   }
 }

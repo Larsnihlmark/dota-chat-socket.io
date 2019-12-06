@@ -13,7 +13,7 @@ const store = new Vuex.Store({
     showPasswordModal: false,
     error: ""
   },
-  mutations: {
+  mutations: { //Detta är alla functioner för att uppdatera alla state
     SaveMessage(state, newMessage) {
       state.message = newMessage; 
     },

@@ -1,5 +1,5 @@
 <template>
-
+<!-- Hantering av att skapa nya rooms med en modal -->
 <b-modal id="rooms-modal" ref="rooms-modal" body-bg-variant="dark"  bg-dark centered hide-footer hide-header title="Display Your Name">
     <div class="d-block text-center text-white bg-dark">
         <h3>Custom Room</h3>
@@ -32,27 +32,20 @@
     <b-button size="sm" class="mt-1" variant="success" block  @click="handleSubmit">Enter Custom Room</b-button>
     <p class="error">{{this.error}}</p>
 </b-modal>
-
-
 </template>
 
 <script>
 import store from '../Store/store';
 export default {
     name: "LoginModal",
-
     data(){
         return{
             name: "",
             password: "",
-            error: ""
-            
+            error: ""  
         }
     },
     methods:{
-        showModal(){
-            // this.$refs['rooms-modal'].show()
-        },
         handleSubmit() {
             // join room 
             this.$socket.client.emit('create-room', { room: this.name, username: store.state.userName, password: this.password });
@@ -70,8 +63,8 @@ export default {
                     return this.$refs['rooms-modal'].hide();
                 }
             });
-            this.$socket.client.emit('get-rooms', '', (data) => {
-                store.commit('addRooms', data);
+            this.$socket.client.emit('get-rooms', '', (data) => { //När man skapar ett room så hämtar alla från server
+                store.commit('addRooms', data); // sparar till Vuex store
             });
         }
     }

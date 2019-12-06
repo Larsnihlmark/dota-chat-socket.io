@@ -1,11 +1,12 @@
 <template>
+<!-- Hantering av ett  Chattmeddelande -->
   <div class="singleMessage">
     <span class="username">{{this.userName}}</span>
-    <div v-if="this.singleMessage.indexOf('https://api.opendota.com/apps/dota2/images/') !== -1">
-      <img v-bind:src='this.singleMessage'><img>  
+    <div v-if="this.singleMessage.indexOf('https://api.opendota.com/apps/dota2/images/') !== -1"> <!-- Kollar om det finns bild för dota API -->
+      <img v-bind:src='this.singleMessage'><img>  <!-- Vissar bilden -->
     </div>
       <div v-else>
-        <p>{{this.singleMessage}}</p>
+        <p>{{this.singleMessage}}</p> <!-- Om det inte finns en bild vissar meddelandet -->
       </div>
   </div>
 </template>

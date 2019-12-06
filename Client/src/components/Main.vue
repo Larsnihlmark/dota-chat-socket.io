@@ -1,16 +1,13 @@
 <template>
+<!-- Behållarna för mitten av sidan chat och chatinput tar den in -->
   <div class="Main">
     <div class="Title" v-on:>
       <h2>{{titleSelectedRoom}}</h2>
     </div>
     <Chat/>
     <ChatInput/>
-
   </div>
-
 </template>
-
-
 
 <script>
 import ChatInput from './ChatInput';
@@ -21,10 +18,9 @@ export default {
   components: {
     ChatInput,
     Chat
-
   },
   computed: {
-    titleSelectedRoom: function(){
+    titleSelectedRoom: function(){ // Räkna ut vilket rum genom Vuex state
       return store.state.selectedRoom;
     }
   }
